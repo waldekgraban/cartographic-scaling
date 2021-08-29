@@ -19,6 +19,10 @@ class Map
         $this->distanceOnMap = isset($data['distanceOnMap']) ? $data['distanceOnMap'] : 1;
     }
 
+    public function __toString() {
+        return "This map is on a scale of {$this->getOriginalScale()} where 1 cm is equal to {$this->getDistanceOnMapInKilometers()} kilometers";
+    }
+
     public function getOriginalScale(): string
     {
         return $this->scale;
