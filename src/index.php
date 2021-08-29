@@ -12,9 +12,10 @@ require_once "../vendor/autoload.php";
 use Waldekgraban\CartographicScaling\Map\Map;
 
 //example of use
-$mapScale = '1:15000';
+$mapData = [
+    'scale'         => '1:15000',    //with ":" as scale separator
+    'distanceOnMap' => 10            //in cm
+];
 
-$map = new Map($mapScale);
-echo $map->getScale(); 
-
-
+$map = new Map($mapData);
+echo $map->getDistanceOnMapInMeters();
