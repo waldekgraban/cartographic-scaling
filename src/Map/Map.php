@@ -15,10 +15,13 @@ class Map extends MapInputDataValidator
 
     public function __construct(array $data)
     {
-        $this->checkMapInputData($data);
-        
-        $this->scale         = isset($data['scale'])         ? $data['scale']         : 1;
-        $this->distanceOnMap = isset($data['distanceOnMap']) ? $data['distanceOnMap'] : 1;
+        if($this->checkMapInputData($data) === true){
+            $this->scale         = $data['scale'];
+            $this->distanceOnMap = $data['distanceOnMap'];
+        } else {
+            $this->checkMapInputData($data);
+        }
+
     }
 
     public function __toString() {
@@ -49,8 +52,7 @@ class Map extends MapInputDataValidator
 
     public function getScale(): int
     {
-        $scale = $this->convertScale();
-        return $scale;
+        return $this->convertScale();
     }
 
     private function convertScale(): int
