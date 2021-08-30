@@ -15,12 +15,31 @@ class Map extends MapInputDataValidator
 
     public function __construct(array $data)
     {
+        $this->checkMapInputData($data);
+        
         $this->scale         = isset($data['scale'])         ? $data['scale']         : 1;
         $this->distanceOnMap = isset($data['distanceOnMap']) ? $data['distanceOnMap'] : 1;
     }
 
     public function __toString() {
         return "This map is on a scale of {$this->getOriginalScale()} where 1 cm is equal to {$this->getDistanceOnMapInKilometers()} kilometers\n";
+    }
+
+    private function checkMapInputData($data)
+    {
+        $response = $this->isValid($data);
+
+        if($response !== true){
+            echo 'Problem found while creating the map object. Below you will find a list of irregularities found:';
+            foreach ($response as $key => $error) {
+                foreach ($error as $key => $value) {
+                    echo '<br/> - ' . $key . ' : ' . $value;
+                };
+            };
+            die();
+        }
+
+        return $response;
     }
 
     public function getOriginalScale(): string

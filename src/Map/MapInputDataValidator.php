@@ -9,39 +9,71 @@ namespace Waldekgraban\CartographicScaling\Map;
 
 class MapInputDataValidator
 {
-    protected function isValid($data): bool
+    protected function isValid($data)
     {
         $validatorInfo = $this->inputDataValidator($data);
 
-        return isset($validatorInfo['result']) && $validatorInfo['result'] === true 
+        return empty($validatorInfo)
             ? true 
-            : false;
+            : $validatorInfo;
     }
 
-    protected function inputDataValidator($data): array
+    protected function inputDataValidator($data)
     {
-        $validatorInfo = [];
+        $mapDataValidator = $this->inputMapDataViewer($data);
 
-        if(isset($data) && is_array($data)){
-            
-            $validatorInfo = ['input_data_is_array' => true];
-            
-            if(isset($data['scale']) && is_string($data['scale'])){
-                $validatorInfo = ['scale_is_string' => true];
+        $errors = [];
 
-                if (strpos($data['scale'], ':') !== false) {
-                    $validatorInfo = ['the scale has a colon as a separator' => true];
-                }
+        foreach ($mapDataValidator as $key => $value) {
+            if($value !== true){
+                $errors[] = [
+                    $key => 'Failure'
+                ];
             }
-
-        } else {
-            $validatorInfo = [
-                'input_data_is_array'                  => false,
-                'scale_is_string'                      => false,
-                'the scale has a colon as a separator' => false
-            ];
         }
 
-        return $validatorInfo;
+        return $errors;
     }
+
+    protected function inputMapDataViewer($data): array
+    {
+        return [
+            'input_data_is_array'                  => $this->checkInputDataIsArray($data),
+            'scale_is_string'                      => $this->checkScaleIsString($data),
+            'scale_is_not_empty'                   => $this->checkScaleIsNotEmpty($data),
+            'the_scale_has_a_colon_as_a_separator' => $this->checkScaleHasColonAsSeparator($data),
+            'distance_on_map_is_numeric'           => $this->checkDistanceOnMapIsNumeric($data),
+            'distance_on_map_is_not_empty'         => $this->checkDistanceOnMapIsNotEmpty($data)
+        ];
+    }
+
+    private function checkInputDataIsArray($data): bool
+    {
+        return (isset($data) && is_array($data)) ? true : false;
+    }
+
+    private function checkScaleIsNotEmpty($data): bool
+    {
+        return (isset($data['scale']) && !empty($data['scale'])) ? true : false;
+    }
+
+    private function checkScaleIsString($data): bool
+    {
+        return (isset($data['scale']) && is_string($data['scale'])) ? true : false;
+    }
+
+    private function checkScaleHasColonAsSeparator($data): bool
+    {
+        return (isset($data['scale']) && strpos($data['scale'], ':') !== false) ? true : false;
+    }
+
+    private function checkDistanceOnMapIsNumeric($data): bool
+    {
+        return (isset($data['distanceOnMap']) && is_numeric($data['distanceOnMap'])) ? true : false;
+    }
+
+    private function checkDistanceOnMapIsNotEmpty($data): bool
+    {
+        return (isset($data['distanceOnMap']) && !empty($data['distanceOnMap'])) ? true : false;
+    }    
 }

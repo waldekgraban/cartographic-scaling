@@ -14,6 +14,7 @@ use Waldekgraban\CartographicScaling\Map\Map;
 //example of use
 $mapData = [
     'scale'         => '1:15000',    //with ":" as scale separator
+    // 'scale'         => '',    //with ":" as scale separator
     'distanceOnMap' => 10            //in cm
 ];
 
