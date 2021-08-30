@@ -7,7 +7,7 @@
 
 namespace Waldekgraban\CartographicScaling\Map;
 
-class Map
+class Map extends MapInputDataValidator
 {
     const SCALE_SEPARATOR = ':'; 
 
@@ -20,7 +20,7 @@ class Map
     }
 
     public function __toString() {
-        return "This map is on a scale of {$this->getOriginalScale()} where 1 cm is equal to {$this->getDistanceOnMapInKilometers()} kilometers";
+        return "This map is on a scale of {$this->getOriginalScale()} where 1 cm is equal to {$this->getDistanceOnMapInKilometers()} kilometers\n";
     }
 
     public function getOriginalScale(): string
