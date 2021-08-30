@@ -21,7 +21,6 @@ class Map extends MapInputDataValidator
         } else {
             $this->checkMapInputData($data);
         }
-
     }
 
     public function __toString() {
