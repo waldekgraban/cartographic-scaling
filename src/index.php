@@ -18,5 +18,5 @@ $mapData = [
 ];
 
 $map = new Map($mapData);
-// echo $map->getDistanceOnMapInMeters();
+
 echo $map;
